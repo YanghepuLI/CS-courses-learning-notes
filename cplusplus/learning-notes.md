@@ -66,7 +66,7 @@ int(x); //c++
 ```
 另外c++还引入了四个强制类型转换运算符，其中一个时static_cast<typeName> (value), 其他以后会学到
 
-## auto字符cscode编译
+## auto字符
 auto是一个c语言关键字，但很少使用。如果使用关键词auto，不指定变量的类型。编译器会把变量类型变成其初始值相同。
 ``` 
 auto x = 100; // x is int
