@@ -43,35 +43,99 @@ const int Month = 12; //Month is a symbolic constant for 12
 ## 类型转换
 
 + 赋值时会自动进行转换。比如：
+
 ```
 so_long = thirty; // assigning a short to long
 ```
+
 此时会自动将thirty的值变成long传给so_long， thirty的内容不变。
 这样会造成把一个小范围的值给一个大范围的值的时候，只是占用的字节变大，但是把一个大范围的赋值给小范围，可能出现问题，会造成误差
+
 + 以{}方式进行转换
 
-c++11 将使用{}的初始化称为列表初始化（list initialization）,用于给复杂的数据类型提供值列表，对类型转化更严格，不允许narrowing 
+c++11 将使用{}的初始化称为列表初始化（list initialization）,用于给复杂的数据类型提供值列表，对类型转化更严格，不允许narrowing
+
 ```
 char c1 {31325}; //narrowing, not allowed
 char c2 = {66}; //allowed, char can hold 66
 ```
+
 + 表达式中的转换
 + 传递参数时转换
 + 强制类型转换
-
 ```
 float x = 1.0;
 (int) x; //coming from c
 int(x); //c++
 ```
-另外c++还引入了四个强制类型转换运算符，其中一个时static_cast<typeName> (value), 其他以后会学到
 
+ 
 ## auto字符
 auto是一个c语言关键字，但很少使用。如果使用关键词auto，不指定变量的类型。编译器会把变量类型变成其初始值相同。
 ``` 
 auto x = 100; // x is int
 ```
-  
 
+## 数组
+声明数组需要三点：
++ 元素中值的类型
++ 数组名
++ 元素个数
+```
+short months[12]; // creates array of 12 short
+```
+注意一些定义细节：
++ 只有在定义数组时才能初始化
+```
+int cards[4] = {3, 4, 5, 6}; // allowed
+int cards[4];
+cards[4] = {3, 4, 5, 6}; // not allowed
+```
++ 如果只对数组一部分初始化，编译器会将其他元素设置为0
+```
+int zeros[500] = {0}; // a array of zeros
+```
++ 如果初始化时[]内为空，则编译器将计算元素个数
+```
+short a[]={1, 2}; // a has 2 elements
+```
+### C++11 数组初始化方法
+使用{}的初始化
+```
+double earnings[4] {1.2e4, 1.6e4, 1.1e4};
+float blance[100] {}; // all elements set to 0
+```
 
-  
+## 字符串
++ C-style 字符串， 以空字符\0结尾， 不是以空字符\0结尾的不是字符串， 是字符数组
++ 字符串常量（string constant）， 使用双引号， 并隐式地包括了结尾的空字符   注意赋值时双引号包括的字符串表示的是字符串所在的内存地址
+
+## 在数组中使用字符串
+标准头文件cstring提供了很多实用的函数。 注意sizeof(）指出整个数组的长度（包含空字符）， strlen()只计算可见的字符（忽略空字符） 所以将字符串输入到数组时，数组长度至少为strlen(example）+1
+
+## 字符串输入
++ 面向行的输入： getline()
+cin.getline(name, size)有2个参数， 第一个参数用来存储输入行的数组的名称，第二个参数是要读取的字符数。 getline()成员函数在读取指定数目的字符或遇到换行符时停止读取，但不保存换行符，将换行符换成空字符
++ 另一面向行的输入： get()
+cin.get(name, size)与getline()不同在于，get并不再读取并丢弃换行符，而是留在输入队列中。这带来了一个问题是再次调用get()函数时由于换行符在输入队列之首，于是无法发现新的可读取的内容。
+使用另外一种变体来解决这个问题：
+```
+cin.get(name1, size); // read first line
+cin.get(); // read newline
+cin.get(name2, size); // read second line
+```
+or
+```
+cin.get(name, size).get(); //concatenate member functions 直接读完第一行，getline()可用同种拼接方式连续读2行内容
+```
+## 空行和其他输入问题
+需要注意getilne()和get()可能遇到读取空行，或者输入的字符串比分配的空间长。 get()读取空行后会设置失效位，getline()在输入大于分配空间会设置失效位。 cin.clear()可以恢复并继续输出。
+
+## 混合输入字符串和数字
+先用cin读取数字的话，回车产生的换行符可能留在输入队列导致cin.getline()认为后续输出为空行。应该先读取并丢弃换行符。
+```
+cin >> year;
+cin.get(); // or (cin >> year).get();
+```
+
+## string类
