@@ -36,3 +36,41 @@ const int Month = 12; //Month is a symbolic constant for 12
 + const比C中#define 语句更好， 明确指定类型， 可以用C++的作用域规则限定在特定的函数或者文件中，且可以用于更复杂的结构
 ## 浮点数
 
+一部分表示数，一部分表示缩放因子。
+两种表示方法：8.00    8e-2/8E+3
+三类： float, double, long double，  希望浮点类型为float， 通常后面+f/F， 为long double， +l/L
+
+## 类型转换
+
++ 赋值时会自动进行转换。比如：
+```
+so_long = thirty; // assigning a short to long
+```
+此时会自动将thirty的值变成long传给so_long， thirty的内容不变。
+这样会造成把一个小范围的值给一个大范围的值的时候，只是占用的字节变大，但是把一个大范围的赋值给小范围，可能出现问题，会造成误差
++ 以{}方式进行转换
+
+c++11 将使用{}的初始化称为列表初始化（list initialization）,用于给复杂的数据类型提供值列表，对类型转化更严格，不允许narrowing 
+```
+char c1 {31325}; //narrowing, not allowed
+char c2 = {66}; //allowed, char can hold 66
+```
++ 表达式中的转换
++ 传递参数时转换
++ 强制类型转换
+
+```
+float x = 1.0;
+(int) x; //coming from c
+int(x); //c++
+```
+另外c++还引入了四个强制类型转换运算符，其中一个时static_cast<typeName> (value), 其他以后会学到
+
+## auto字符cscode编译
+auto是一个c语言关键字，但很少使用。如果使用关键词auto，不指定变量的类型。编译器会把变量类型变成其初始值相同。
+``` 
+auto x = 100; // x is int
+```
+需要注意这样可能有风险
+
+
