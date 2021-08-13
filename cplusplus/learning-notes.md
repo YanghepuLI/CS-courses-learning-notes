@@ -139,3 +139,99 @@ cin.get(); // or (cin >> year).get();
 ```
 
 ## string类
+string允许c-风格初始化，也可以c++11字符串初始化
+```
+string str1;  //create an empty string
+string str2 = "partner";
+string str3 {“The book”};
+```
+string 允许cin输入，cout显示，可以使用数组表示法访问string对象中的字符
+
+string赋值、拼接和附加
+
+数组无法直接赋值，需要用strcpy()方法，但是string可以直接赋值
+```
+str1 = str2; // allowed for string
+```
+
+string可以直接用加法拼接， 数组需要用strcat()
+```
+string str3;
+str3 = str1 + str2; //allowed
+str1 += str2; //allowed 
+```
+
+string的其他操作
+```
+strcpy(charr1, charr2); //copy charr2 to charr1
+strcat(charr1, charr2); //append contents of charr2 to charr1
+strlen(str1); //length of str1, excluding the '\n'
+charr1.size(); //length of charr1, including the '\n'
+```
+string类I/O
+```
+getline(cin, str); //set next line as input to str
+```
+
+## struct
+```
+struct inflatable {
+    char name[20];
+    float volume;
+    double price;
+};
+inflatable guest {
+    "basketball",
+    1.88,
+    29.9
+};
+```
+结构数组：
+生成一个inflatable数组，里面每个元素都是一个inflatable对象
+```
+inflatable gifts[100];
+cin >> gifts[0].name;
+cout << gifts[0].name;
+```
+结构可以指定结构成员的占用字段
+```
+struct torgle_register {
+    unsigned int SN : 4; //4 bits for SN value
+    unsigned int : 4; //4 bits unused
+    bool goodIn : 1; //valid input (1 bit)
+    bool goodTorgle :1; 
+};
+```
+
+## union
+共用体是一种数据格式， 能够存储不同的数据类型，但只能同事存储其中一种类型。 比如， 一个产品的id可能是int也可能是char， 这个时候可以用union。 可以和struct混用
+```
+struct widget {
+    char brand[20];
+    int type;
+    union id  //format depends on widget type
+    {
+      long id_num; // type1 widgets
+      char id_char[20]; //other widgets
+    } id_val;   // id_val 是union id的中间标志符， 可以没有 ，如果没有id_val， 则共用体为匿名共用体， id_num和id_char为prize的2个成员， 但位于相同地址， 因此只能有一个为当前成员
+};
+...
+widget prize;
+...
+if (prize.type == 1)
+  cin >> prize.id_val.id_num;
+else
+  cin >> prize.id_val.id_char;
+```
+
+## enum
+
+c++的enum工具提供了另一种创建符号常量的方式， 可以代替const，允许定义新类型, 但必须按照严格限制
+```
+enum spectrum {red, orange, yellow, green, blue, violet, indigo, ultraviolet}；
+```
+一般enum成员值默认为从0开始依次+1的整数， 也可以用赋值语句在定义时显示表示，但必须是整数
+
+## pointer
+
+
