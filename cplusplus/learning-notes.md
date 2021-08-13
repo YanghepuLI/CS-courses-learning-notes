@@ -233,5 +233,36 @@ enum spectrum {red, orange, yellow, green, blue, violet, indigo, ultraviolet}；
 一般enum成员值默认为从0开始依次+1的整数， 也可以用赋值语句在定义时显示表示，但必须是整数
 
 ## pointer
+初始化和赋值
+```
+int * p; //initializaztion
+int * p1, p2; // p1 is a pointer, p2 is an int
+int * p3 = &p2; // initialize a pointer p3 and assign it to p2
+p = &p2; 
+```
+指针的危险
+在指针应用解锁应用运算符* 前， 要将指针初始化为一个确定的、适当的地址。 不然随意给* p赋值， 可能让* p指向一个危险的地址
+
+指针和数字
+指针不是整形， 但计算机经常讲指针当做整形吹了。 如果要给指针一个整形地址， 要加 (int * )
+```
+int * pt;
+pt = (int *) 0xB8000000;
+```
+## new 创建动态数组
+```
+int * p = new int[10]; // create a block of 10 ints
+p = p + 1; //动态数组和数组， 数组名不能运算 ，但指针可以运算， 指针指这个动态数组的初位置， 这里+ 1 指向下一个位置
+delete [] p;
+```
+使用new和delete时，注意以下规则：
++ 不要用delete释放不是new分配的内存
++ 不要用delete释放同一个内存块2次
++ 使用new [] 分配的内存用 delete [] 释放
++ 对空指针用delete安全
+
+## 指针算数
+指针变量+1， 增加的量等于它指向的类型的字节数。  自然， 对于一个数组指针， 数组指针+1表示它增加一个指向类型的字节， 自然等价于指向下一个地址
+* (p + 1) 等价于 p[1]
 
 
