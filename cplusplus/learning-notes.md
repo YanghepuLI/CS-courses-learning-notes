@@ -311,3 +311,28 @@ array<double, 4> ad1 = {1.2, 2.1, 3.4, 5};
 array<double, 4> ad2;
 ad2 = ad1 //allowed for same-size array, not allowed for char[]
  ```
+## 类型别名
+改变类型名称有2种方式， 第一种使用预处理器
+```
+#define BYTE char // preprocessor replace char with BYTE
+```
+第二种使用c++关键字 typedef
+```
+typedef char byte; // typedef typeName aliasName;
+```
+typedef比预处理器要好， 原因是预处理器在同时声明多个变量的时候可能会出问题
+```
+#define FLOAT_POINTER float *
+FLOAT_POINTER pa, pb；// float * pa, pb; which means pa is a pointer but pb is just a float
+```
+
+## range-based for loop
+suitable for char[]/array/vector
+```
+double prices[5] = {1, 2, 3, 4, 5};
+for (double x : prices) 
+    cout << x << endl; // uable to change elements in char[]
+    
+for (double &x : prices)
+    x = x * 0.8; // able to change value
+```
