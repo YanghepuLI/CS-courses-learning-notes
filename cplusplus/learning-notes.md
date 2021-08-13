@@ -69,7 +69,6 @@ float x = 1.0;
 int(x); //c++
 ```
 
- 
 ## auto字符
 auto是一个c语言关键字，但很少使用。如果使用关键词auto，不指定变量的类型。编译器会把变量类型变成其初始值相同。
 ``` 
@@ -115,7 +114,8 @@ float blance[100] {}; // all elements set to 0
 
 ## 字符串输入
 + 面向行的输入： getline()
-cin.getline(name, size)有2个参数， 第一个参数用来存储输入行的数组的名称，第二个参数是要读取的字符数。 getline()成员函数在读取指定数目的字符或遇到换行符时停止读取，但不保存换行符，将换行符换成空字符
+cin.getline(name, size)有2个参数， 第一个参数用来存储输入行的数组的名称，第二个参数是要读取的字符数。 
+getline()成员函数在读取指定数目的字符或遇到换行符时停止读取，但不保存换行符，将换行符换成空字符
 + 另一面向行的输入： get()
 cin.get(name, size)与getline()不同在于，get并不再读取并丢弃换行符，而是留在输入队列中。这带来了一个问题是再次调用get()函数时由于换行符在输入队列之首，于是无法发现新的可读取的内容。
 使用另外一种变体来解决这个问题：
@@ -225,7 +225,6 @@ else
 ```
 
 ## enum
-
 c++的enum工具提供了另一种创建符号常量的方式， 可以代替const，允许定义新类型, 但必须按照严格限制
 ```
 enum spectrum {red, orange, yellow, green, blue, violet, indigo, ultraviolet}；
@@ -265,4 +264,50 @@ delete [] p;
 指针变量+1， 增加的量等于它指向的类型的字节数。  自然， 对于一个数组指针， 数组指针+1表示它增加一个指向类型的字节， 自然等价于指向下一个地址
 * (p + 1) 等价于 p[1]
 
+## new 创建动态结构
+```
+inflatable * ps = new inflatable;
+```
+注意，指针访问内部成员的运算符时->， 结构访问内部成员的运算符是.
+```
+ps->price; //ps指向的结构的price成员
+(*ps).price; //*ps等价于指向的结构
+```
 
+## 自动存储、静态存储和动态存储
++ 自动存储
+函数内部定义的常规变量使用自动存储空间。 所属的函数被调用时自动产生， 函数结束时消亡
+自动变量通常存储在栈中， 遵循（LIFO）
++ 静态存储
+整个程序执行期间都存在的存储方式。 使变量成为金泰的方式有2种， 第一种是在函数外面定义， 另一种是声明时加上关键词static
++ 动态存储
+new/delete 提供的更灵活的控制内存方法， 管理了一个内存池， 在c++种称为free store or heap. 
+在栈中， 自动添加和删除机制使得占用的内存总是连续的， 但new和delete的相互影响可能导致占用的free store不连续， 使得跟踪新分配内存的位置更困难
+
+## 内存泄露
+new在free store上创建变量后没有delete， 那么即使包含指针的内存由于作用于规则和对象生命周期的原因而被释放， 在free store上动态分配的变量或结构将继续存在。 
+将会无法访问free store中的这些结构， 这将导致内存泄漏。被泄露的内存在程序的整个生命周期中都不可使用，被分配出去但无法回收。
+
+## vector
+vector是一种动态数组，使用new创建的动态数组的替代品。vector类使用new/delete管理内存，但这个工作自动完成.
+```
+#include <vector>
+using namespace std;
+// vector<typeName> vt(n_elem);
+vector<int> vi; //create a zero-size array of int
+int n;
+cin >> n;
+vector<double> vd(n); //create a double array of size n 
+```
+## array
+vector类的功能比数组强大，但效率略低。如果需要的时固定长度的数组，使用数组时更加的选择。array类位于std中，对象的长度固定，使用栈分配内存，因此效率于数组相同，更方便更安全。
+```
+include <array>
+using namespace std;
+
+// array<typeName, n_elem> arr;
+array<int, 5> ai; //create array object of 5 ints
+array<double, 4> ad1 = {1.2, 2.1, 3.4, 5};
+array<double, 4> ad2;
+ad2 = ad1 //allowed for same-size array, not allowed for char[]
+ ```
