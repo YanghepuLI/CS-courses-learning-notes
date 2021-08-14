@@ -336,3 +336,4 @@ for (double x : prices)
 for (double &x : prices)
     x = x * 0.8; // able to change value
 ```
+
