@@ -337,3 +337,76 @@ for (double &x : prices)
     x = x * 0.8; // able to change value
 ```
 
+## c++内联函数
+内联函数的编译代码与其他程序代码“内联”， 及编译器将使用相应的函数代码替换函数调用。 无需跳跃到另一个位置执行代码 ，更快， 但占用更多内存。 
+函数声明和定义前加上关键词 inline
+```
+inline double square(double x) {return x * x;}
+ ```
+## 引用
+引用变量的主要用途是用作函数的形参 ，通过将引用变量用作参数 ，函数将使用原始数据而不是副本。
+
+### 创建引用变量
+&除了在C和C++中指向地址， 还可在c++中用于声明引用
+```
+int rats;
+int & rodents = rats; // make rodents an alias for rats
+int * pt = &rats;
+```
+int & 表示指向int的引用, rats和rodents地址相同， 可以理解为一个变量有2个变量名。 rats，rodents, * pt可互换， &rats, pt, & rodents可互换
+引用看上去与指针很类似， 但是仍有区别。声明引用时必须同时初始化， 而不能像指针一样先声明再赋值。引用更接近const 指针， 创建时初始化， 一旦与某个变量关联后就一直指向它。例如：
+```
+int rats = 50;
+int * pt = & rats;
+int & rodents = * pt;
+int bunnies = 100;
+pt = & bunnies;
+```
+此时，即使pt指向bunnies，rodents仍然指向rats。
+
+## 引用作为函数参数
+当需要改变输入函数的参数时最好使用引用作为形参输入
+如果实参与引用参数不匹配，C++将生成临时变量。 仅当参数为const引用时才可以。
+所以尽可能使用const引用
+
+## 左值和右值，左值引用和右值引用
+一般的有变量名称的值都为左值， 可以通过地址访问。 不能通过地址访问的值为右值，如长表达式或者没有变量名的值。 C++11新增一种新的引用，右值引用，使用&&声明
+```
+double && rref = std::sqrt(36.00); // not allowed for & 
+double j = 15.6;
+double && jref = 2.0 * j + 3.9; // not allowed for & 
+```
+## 将引用用于结构和类
+引用非常适用于结构和类
+例如return引用要好于return其他变量类型。 return函数返回一个其他变量类型时，将该值复制到一个临时位置，再给目标对象。 如果返回引用则不需要一个临时位置来传递，效率更高。 但返回引用时应该注意避免返回函数终止时消亡的内参单元引用， 指针同理。  或者在函数创建指针（new）时（很可能是隐形的），记得delete删除内存或者使用auto_ptr模板。
+常规return类型是右值。这种返回值处于临时内存单元中，下一条语句是可能就不复存在。 假设要引用返回值， 则可以将返回值加const关键词。
+
+## 默认参数
+C++允许设置默认参数， 但是主要默认值从右往左添加默认值
+```
+int hargo(int n, int m = 4, int j = 5) ; //valid
+int hargo(int m = 4, int j = 5, int n) ; //invalid
+```
+```
+hargo(3); // = hargo(3, 4, 5)
+hargo(3, 3); // = hargo(3, 3, 5)
+hargo(3, ,8); //invalid
+```
+## 函数重载
+函数重载指多个同名的函数，对名称进行重载。关键是函数的参数列表，也称为函数特征标（function signature） 编译器在检查函数特征标时将类型引用和类型本身视为同一个特征标。
+
+## 函数模板
+函数模板是通用的函数描述， 使用泛型来定义函数。
+```
+template <typename AnyType> // same as <class AnyType>
+void Swap(AnyType &a, AnyType &b) {
+    AnyType temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
+```
+
+## 重载的模板
+
+
