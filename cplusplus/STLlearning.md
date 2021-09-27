@@ -85,7 +85,9 @@ Properties:
 + no random access, no [] operator
 
 ```
-mylist1.splice(itr, mylist2, itr_a, itr_b); // cut mylist2 from itr_a to itr_b to insert to mylist1 at itr, O(1), no other containers can do this
+mylist1.splice(itr, mylist2, itr_a, itr_b); 
+// cut mylist2 from itr_a to itr_b to insert to mylist1 
+// at itr, O(1), no other containers can do this
 ```
 
 ## forward list
